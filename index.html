@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Water Quality Predictor</title>
+</head>
+<body>
+  <h2>Water Quality Prediction</h2>
+  <input type="number" id="tds" placeholder="TDS (mg/L)"><br>
+  <input type="number" id="ph" placeholder="pH"><br>
+  <input type="number" id="turbidity" placeholder="Turbidity (NTU)"><br>
+  <button onclick="predict()">Predict</button>
+  
+  <h3>Result</h3>
+  <pre id="result"></pre>
+
+  <script>
+    async function predict() {
+      const tds = document.getElementById('tds').value;
+      const ph = document.getElementById('ph').value;
+      const turbidity = document.getElementById('turbidity').value;
+
+      const response = await fetch('http://127.0.0.1:5000/predict', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ tds, ph, turbidity })
+      });
+
+      const data = await response.json();
+      document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>
